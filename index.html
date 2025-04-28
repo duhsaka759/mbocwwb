@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBOCWWB Reporting Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #0a0a2a, #1a1a40, #2a2a60, #3a3a80);
+            background-size: 400% 400%;
+            animation: gradient 12s ease infinite;
+            font-family: 'Arial', sans-serif;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: rgba(30, 30, 50, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            margin: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: #3a3a80;
+            color: #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #2a2a60;
+        }
+
+        /* Technology-Themed Background */
+        .tech-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none" stroke="rgba(100,150,255,0.2)" stroke-width="2"%3E%3Cpath d="M100,100 H600 V300 H1000 V500 H1400 M200,200 V400 H800 V600 M400,100 V700 M600,300 H1200 M1000,500 V800 M1400,500 V900" stroke-linecap="round"/%3E%3Ccircle cx="100" cy="100" r="10"/%3E%3Ccircle cx="600" cy="300" r="10"/%3E%3Ccircle cx="1000" cy="500" r="10"/%3E%3Ccircle cx="1400" cy="500" r="10"/%3E%3C/svg%3E') no-repeat center center;
+            background-size: cover;
+        }
+
+        /* SVG for Moving Glow Lines */
+        .tech-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tech-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .glow-path {
+            stroke: rgba(50, 200, 255, 0.8);
+            stroke-width: 4;
+            fill: none;
+            stroke-linecap: round;
+            stroke-dasharray: 50, 150;
+            animation: dash 4s linear infinite;
+        }
+
+        @keyframes dash {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -200; }
+        }
+
+        /* Glowing Nodes */
+        .tech-nodes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .node {
+            position: absolute;
+            background: rgba(50, 200, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(50, 200, 255, 0.8);
+            animation: flicker 3s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center">
+    <!-- Technology-Themed Background -->
+    <div class="tech-background">
+        <div class="tech-lines">
+            <svg viewBox="0 0 1600 900">
+                <path class="glow-path" d="M100,100 H600 V300 H1000 V500 H1400" />
+                <path class="glow-path" d="M200,200 V400 H800 V600" />
+                <path class="glow-path" d="M400,100 V700" />
+                <path class="glow-path" d="M600,300 H1200" />
+            </svg>
+        </div>
+        <div class="tech-nodes" id="nodes"></div>
+    </div>
+
+    <!-- Dashboard Title -->
+    <h1 class="text-4xl font-bold text-white mt-8 animate__animated animate__fadeIn">MBOCWWB Reporting Dashboard</h1>
+
+    <!-- Active vs Expired Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Active vs Expired (Cumulative)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Districts</th>
+                    <th>Active</th>
+                    <th>Expired</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Aizawl</td><td>8607</td><td>18333</td><td>26940</td></tr>
+                <tr><td>Serchhip</td><td>3504</td><td>6881</td><td>10385</td></tr>
+                <tr><td>Saitual</td><td>1156</td><td>2114</td><td>3270</td></tr>
+                <tr><td>Kolasib</td><td>2298</td><td>1912</td><td>4210</td></tr>
+                <tr><td>Mamit</td><td>1248</td><td>3312</td><td>4560</td></tr>
+                <tr><td>Lunglei</td><td>1582</td><td>1080</td><td>2662</td></tr>
+                <tr><td>Champhai</td><td>2794</td><td>2950</td><td>5744</td></tr>
+                <tr><td>Siaha</td><td>2072</td><td>334</td><td>2406</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>23261</strong></td><td><strong>36916</strong></td><td><strong>60177</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Male vs Female (Active) Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Male vs Female (Active)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Districts</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Aizawl</td><td>5636</td><td>2971</td><td>8607</td></tr>
+                <tr><td>Serchhip</td><td>2079</td><td>1425</td><td>3504</td></tr>
+                <tr><td>Saitual</td><td>806</td><td>350</td><td>1156</td></tr>
+                <tr><td>Kolasib</td><td>1567</td><td>731</td><td>2298</td></tr>
+                <tr><td>Mamit</td><td>763</td><td>485</td><td>1248</td></tr>
+                <tr><td>Lunglei</td><td>1379</td><td>203</td><td>1582</td></tr>
+                <tr><td>Champhai</td><td>1808</td><td>986</td><td>2794</td></tr>
+                <tr><td>Siaha</td><td>1425</td><td>647</td><td>2072</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>15463</strong></td><td><strong>7798</strong></td><td><strong>23261</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Male vs Female (Expired) Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Male vs Female (Expired)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Districts</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Aizawl</td><td>8251</td><td>10082</td><td>18333</td></tr>
+                <tr><td>Serchhip</td><td>2855</td><td>4026</td><td>6881</td></tr>
+                <tr><td>Saitual</td><td>1299</td><td>815</td><td>2114</td></tr>
+                <tr><td>Kolasib</td><td>1295</td><td>617</td><td>1912</td></tr>
+                <tr><td>Mamit</td><td>1708</td><td>1604</td><td>3312</td></tr>
+                <tr><td>Lunglei</td><td>862</td><td>218</td><td>1080</td></tr>
+                <tr><td>Champhai</td><td>1620</td><td>1314
+                <tr><td>Siaha</td><td>226</td><td>108</td><td>334</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>18116</strong></td><td><strong>18800</strong></td><td><strong>36916</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Occupations (Active) Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Occupations (Active)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Occupation</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Balu la</td><td>289</td><td>255</td><td>544</td></tr>
+                <tr><td>Carpenter (Thing Mistiri)</td><td>3580</td><td>19</td><td>3599</td></tr>
+                <tr><td>Cement Mistiri</td><td>2666</td><td>5</td><td>2671</td></tr>
+                <tr><td>Chinai siam</td><td>2</td><td>16</td><td>18</td></tr>
+                <tr><td>Construction Driver</td><td>408</td><td>1</td><td>409</td></tr>
+                <tr><td>Constructions Machine Operator</td><td>22</td><td>2</td><td>24</td></tr>
+                <tr><td>Electrician</td><td>326</td><td>4</td><td>330</td></tr>
+                <tr><td>Fitter</td><td>3</td><td>0</td><td>3</td></tr>
+                <tr><td>Helper (Construction Works)</td><td>5538</td><td>3668</td><td>9206</td></tr>
+                <tr><td>House interior designer</td><td>24</td><td>1</td><td>25</td></tr>
+                <tr><td>Iron & Aluminium Work</td><td>80</td><td>5</td><td>85</td></tr>
+                <tr><td>JCB/Dozer Operator</td><td>76</td><td>0</td><td>76</td></tr>
+                <tr><td>Kawng leh Lei laia inhlawh</td><td>110</td><td>77</td><td>187</td></tr>
+                <tr><td>Leirawhchan Siam</td><td>4</td><td>11</td><td>15</td></tr>
+                <tr><td>Lung la (Quarry-a thawk)</td><td>482</td><td>83</td><td>565</td></tr>
+                <tr><td>Mason (Lungrem Mistiri)</td><td>532</td><td>4</td><td>536</td></tr>
+                <tr><td>Painter (Rawnghnawih)</td><td>431</td><td>244</td><td>675</td></tr>
+                <tr><td>Plumber</td><td>98</td><td>2</td><td>100</td></tr>
+                <tr><td>Rora Chhu</td><td>327</td><td>3398</td><td>3725</td></tr>
+                <tr><td>Thingzai</td><td>204</td><td>3</td><td>207</td></tr>
+                <tr><td>Thirchher</td><td>34</td><td>0</td><td>34</td></tr>
+                <tr><td>Welder (Thir char)</td><td>175</td><td>0</td><td>175</td></tr>
+                <tr><td>Wireman</td><td>52</td><td>0</td><td>52</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>15463</strong></td><td><strong>7798</strong></td><td><strong>23261</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Occupations (Expired) Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Occupations (Expired)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Occupation</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Balu la</td><td>360</td><td>650</td><td>1010</td></tr>
+                <tr><td>Carpenter (Thing Mistiri)</td><td>3234</td><td>34</td><td>3268</td></tr>
+                <tr><td>Cement Mistiri</td><td>1235</td><td>23</td><td>1258</td></tr>
+                <tr><td>Chinai siam</td><td>2</td><td>60</td><td>62</td></tr>
+                <tr><td>Construction Driver</td><td>347</td><td>2</td><td>349</td></tr>
+                <tr><td>Constructions Machine Operator</td><td>15</td><td>0</td><td>15</td></tr>
+                <tr><td>Electrician</td><td>214</td><td>11</td><td>225</td></tr>
+                <tr><td>Fitter</td><td>12</td><td>1</td><td>13</td></tr>
+                <tr><td>Helper (Construction Works)</td><td>9359</td><td>12029</td><td>21388</td></tr>
+                <tr><td>House interior designer</td><td>3</td><td>3</td><td>6</td></tr>
+                <tr><td>Iron & Aluminium Work</td><td>28</td><td>3</td><td>31</td></tr>
+                <tr><td>JCB/Dozer Operator</td><td>49</td><td>0</td><td>49</td></tr>
+                <tr><td>Kawng leh Lei laia inhlawh</td><td>268</td><td>368</td><td>636</td></tr>
+                <tr><td>Leirawhchan Siam</td><td>13</td><td>26</td><td>39</td></tr>
+                <tr><td>Lung la (Quarry-a thawk)</td><td>997</td><td>226</td><td>1223</td></tr>
+                <tr><td>Mason (Lungrem Mistiri)</td><td>637</td><td>14</td><td>651</td></tr>
+                <tr><td>Painter (Rawnghnawih)</td><td>408</td><td>433</td><td>841</td></tr>
+                <tr><td>Plumber</td><td>92</td><td>10</td><td>102</td></tr>
+                <tr><td>Rora Chhu</td><td>367</td><td>4891</td><td>5258</td></tr>
+                <tr><td>Thingzai</td><td>365</td><td>10</td><td>375</td></tr>
+                <tr><td>Thirchher</td><td>30</td><td>1</td><td>31</td></tr>
+                <tr><td>Welder (Thir char)</td><td>51</td><td>0</td><td>51</td></tr>
+                <tr><td>Wireman</td><td>30</td><td>5</td><td>35</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong>18116</strong></td><td><strong>18800</strong></td><td><strong>36916</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Benefit Disbursement Section -->
+    <div class="card w-full max-w-4xl animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-semibold mb-4">Benefit Disbursement (Up to 28/02/2025)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Benefit / Scheme</th>
+                    <th>Disburse</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Children Educational Assistance</td><td>167655</td></tr>
+                <tr><td>Cash Award</td><td>54</td></tr>
+                <tr><td>Medical Assistance</td><td>3303</td></tr>
+                <tr><td>Death Benefit</td><td>1059</td></tr>
+                <tr><td>Funeral Assistance</td><td>708</td></tr>
+                <tr><td>Disability Benefit</td><td>19</td></tr>
+                <tr><td>Marriage Assistance</td><td>173</td></tr>
+                <tr><td>Maternity Benefit</td><td>1513</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Glowing Nodes Animation
+        const nodesContainer = document.getElementById('nodes');
+        const nodePositions = [
+            { x: '100px', y: '100px' },
+            { x: '600px', y: '300px' },
+            { x: '1000px', y: '500px' },
+            { x: '1400px', y: '500px' },
+            { x: '200px', y: '400px' },
+            { x: '800px', y: '600px' },
+        ];
+
+        nodePositions.forEach(pos => {
+            const node = document.createElement('div');
+            node.classList.add('node');
+            node.style.width = '12px';
+            node.style.height = '12px';
+            node.style.left = pos.x;
+            node.style.top = pos.y;
+            node.style.animationDelay = `${Math.random() * 3}s`;
+            nodesContainer.appendChild(node);
+        });
+    </script>
+</body>
+</html>
